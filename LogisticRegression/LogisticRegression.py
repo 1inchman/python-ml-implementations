@@ -12,7 +12,6 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
         #     raise ValueError(
         #         'Method must be batch, mini-batch, stoch or scipy')
         self.eta_ = eta
-        self.verbose = verbose
         self.n_iter_ = n_iter
         self.C_ = C
         self.method_ = method
@@ -27,8 +26,14 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
         if self.method_ == 'stoch':
             self._stoch_grad(X, y)
         if self.method_ == 'mini-batch':
-            pass
+            self._minibatch_grad(X, y)
         return self
+
+    def _minibatch_grad(self, X, y):
+        pass
+
+    def _minibatch_step(self, X, y):
+        pass
 
     def _batch_grad(self, X, y):
         for i in range(self.n_iter_):
@@ -57,6 +62,9 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
             error - self.eta_ * self.C_ * self.w_[1:]
         self.errors_.append(self.logit_loss(
             sample, y[rand_indices][rand_choice]))
+
+    def one_vs_all(self):
+        pass
 
     def sigmoid(self, X):
         z = self.net_input(X)
